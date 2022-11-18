@@ -1,2 +1,2 @@
-# South_Orkneys
+# South-Orkneys
 NEMO regional configuration for the South Orkneys
