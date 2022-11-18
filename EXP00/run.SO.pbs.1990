@@ -1,0 +1,32 @@
+#!/bin/bash --login
+
+#PBS -N SOice
+#PBS -l select=24
+#PBS -l walltime=36:00:00
+#PBS -o SO.userid
+#PBS -j oe
+#PBS -A charge_account
+#
+
+# Set the number of threads to 1
+# This prevents any system libraries from automatically using threading
+export OMP_NUM_THREADS=1
+
+NNODES=24
+NPROC=480
+NPROCXIO=4
+
+cd $RUNDIR/EXP00
+
+#Run model
+ulimit -c unlimited
+ulimit -s unlimited
+aprun -n $NPROCXIO -N 1 ./xios_server.exe : -n $NPROC -N $NNODES ./opa
+
+#Check output
+RC=$? ; if test $RC -ne 0 ; then echo failed with error code = $RC ; exit ; fi
+
+date
+
+
+

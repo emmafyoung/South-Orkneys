@@ -1,0 +1,24 @@
+#!/bin/bash 
+
+# modules for NEMO
+module load cray-netcdf-hdf5parallel/4.3.2
+module load cray-hdf5-parallel/1.8.13
+
+#Directories
+RUNID=SOice
+HOMEDIR=/home/userid/NEMO_3.6_STABLE/NEMOGCM
+NEMODIR=/work/userid/NEMO_3.6_STABLE/NEMOGCM
+HOMECONFIG=$HOMEDIR/CONFIG/$RUNID
+export RUNDIR=$NEMODIR/CONFIG/$RUNID
+export RUNSCRIPT=run.SO.pbs.1990
+
+if [ ! -d $RUNDIR ]; then
+ mkdir $RUNDIR
+ cp -r $HOMECONFIG/* $RUNDIR
+fi
+
+cd $RUNDIR/EXP00
+
+#Submit run
+qsub -q long -v RUNDIR=$RUNDIR,RUNSCRIPT=$RUNSCRIPT $RUNSCRIPT
+
